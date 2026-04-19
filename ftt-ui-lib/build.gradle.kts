@@ -1,9 +1,12 @@
 import java.util.Properties
 import java.io.FileInputStream
+
 plugins {
-    id("com.android.library")
-    id("maven-publish")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.compose)
+    `maven-publish`
 }
+
 android {
     namespace = "uk.co.fintaxtech.ui"
     compileSdk {
@@ -77,7 +80,6 @@ afterEvaluate {
                 name = "GitHubPackages"
                 url = uri("https://maven.pkg.github.com/Fintaxtech-Ltd/FTTUiDemo")
                 credentials {
-                    // This reads from your local.properties or System Env
                     val localProperties = Properties()
                     val localPropertiesFile = rootProject.file("local.properties")
                     if (localPropertiesFile.exists()) {
