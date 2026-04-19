@@ -1,4 +1,4 @@
-package uk.co.fintaxtech.demo.ui.theme
+package uk.co.fintaxtech.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
