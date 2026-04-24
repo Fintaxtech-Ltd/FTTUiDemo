@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.internal.ComposableFunction0
 import androidx.compose.ui.Modifier
 import uk.co.fintaxtech.ui.activities.FTTEmptyActivity
-import uk.co.fintaxtech.ui.components.FTTActionBar
+import uk.co.fintaxtech.ui.components.FTTTopAppBar
 
 class DemoActivity: FTTEmptyActivity() {
     override val content: @Composable ComposableFunction0<Unit>
@@ -18,7 +18,7 @@ class DemoActivity: FTTEmptyActivity() {
 fun DemoActivityContent() {
         Scaffold(
             topBar = {
-                FTTActionBar(
+                FTTTopAppBar(
                     title = R.string.demo_activity_name
                 )
             },

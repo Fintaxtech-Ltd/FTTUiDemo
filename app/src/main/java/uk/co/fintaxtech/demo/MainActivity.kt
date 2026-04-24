@@ -5,21 +5,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import uk.co.fintaxtech.feature.demo.DemoActivity
 import uk.co.fintaxtech.ui.activities.FTTEmptyActivity
-import uk.co.fintaxtech.ui.components.FTTActionBar
-import uk.co.fintaxtech.ui.theme.FTTUiTheme
-import javax.inject.Inject
+import uk.co.fintaxtech.ui.components.FTTTopAppBar
 import kotlin.jvm.java
 
 @AndroidEntryPoint
@@ -33,7 +29,7 @@ class MainActivity : FTTEmptyActivity() {
 fun MainActivityContent(){
     Scaffold(
             topBar = {
-                FTTActionBar(
+                FTTTopAppBar(
                     title = R.string.app_name
                 )
             },

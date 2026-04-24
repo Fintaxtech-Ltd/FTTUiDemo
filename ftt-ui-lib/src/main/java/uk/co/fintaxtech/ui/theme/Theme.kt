@@ -7,7 +7,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 @Composable
-fun FTTUiTheme(
+fun FTTTheme(
     palette: FTTColorPalette = PreviewColorPalette(),
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="standard_title">Standard Title</string>
+    <string name="ftt_back_desc">Back</string>
 </resources>

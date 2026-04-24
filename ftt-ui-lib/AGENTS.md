@@ -1,92 +1,18 @@
-# ftt-ui-lib/AGENTS.md
+# AGENTS.md# Module Strategy for ftt-ui-lib
 
-Instructions for the main FTT Android UI library module.
+## Package Structure
+Follow this strictly to avoid sprawl:
+- `uk.co.fintaxtech.ui.components.<name>`: Standard UI elements (button, card, text).
+- `uk.co.fintaxtech.ui.views`: Complex layouts (ErrorView, LoadingView).
+- `uk.co.fintaxtech.ui.theme`: Design tokens (color, spacing).
+- `uk.co.fintaxtech.ui.modifier`: Custom reusable modifiers.
 
-## Module Purpose
+## Efficiency "Don'ts" (Prevent Revision Loops)
+1. **DO NOT** suggest adding Hilt or Dagger to this module.
+2. **DO NOT** create a new theme file if one exists; extend the existing `FTTTheme`.
+3. **DO NOT** use `mutableStateOf` inside a library component unless strictly necessary for internal animation.
+4. **DO NOT** ask for permission to create a Preview; it is mandatory.
 
-`ftt-ui-lib` is the reusable Android UI library distributed as:
-
-```xml
-<dependency>
-  <groupId>uk.co.fintaxtech</groupId>
-  <artifactId>ftt-android-ui-lib</artifactId>
-  <version>0.0.2</version>
-</dependency>
-```
-
-## Responsibilities
-
-This module may contain:
-
-- Reusable Jetpack Compose components
-- FTT theme wrappers
-- Color, typography, spacing, shape, and elevation tokens
-- Reusable modifiers
-- UI-only helper utilities
-- Preview/sample-only composables
-- Compose UI tests
-
-This module must not contain:
-
-- Business logic
-- ViewModels
-- Repositories
-- Use cases
-- Retrofit, Room, DataStore
-- App navigation logic
-- App-specific screens
-- Feature-specific domain models
-
-## Component Design Rules
-
-- Prefer stateless composables.
-- Hoist state to callers.
-- Always expose a `modifier: Modifier = Modifier` parameter where useful.
-- Use Material 3 and FTT design tokens.
-- Do not hardcode business strings.
-- Keep parameters simple and consumer-friendly.
-- Avoid exposing unnecessary implementation details.
-- Public APIs must be stable and documented enough for consumers.
-
-## File Organization
-
-Recommended packages:
-
-```text
-uk.co.fintaxtech.ui
-├── components
-│   ├── button
-│   ├── textfield
-│   ├── card
-│   ├── toolbar
-│   └── dialog
-├── theme
-│   ├── color
-│   ├── typography
-│   ├── spacing
-│   └── shape
-├── modifier
-├── preview
-└── util
-```
-
-Adapt to the existing project structure if it differs.
-
-## Previews
-
-- Add previews for visual components.
-- Wrap previews in `FTTTheme`.
-- Include light/dark previews when relevant.
-- Keep preview-only sample data local/private.
-
-## Accessibility
-
-- Interactive components must support semantics.
-- Icon-only interactions need content descriptions unless null is intentionally correct.
-- Components must not block accessibility/custom font scaling.
-
-## Testing
-
-- Add Compose UI tests for interactive behavior.
-- Add unit tests for pure functions/utilities.
-- Test names follow `action_condition_expectedResult`.
+## Quick Commands
+- Verify Build: `./gradlew :ftt-ui-lib:assembleDebug`
+- Run Tests: `./gradlew :ftt-ui-lib:test`

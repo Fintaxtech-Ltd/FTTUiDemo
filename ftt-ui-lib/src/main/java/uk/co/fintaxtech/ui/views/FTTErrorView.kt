@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import uk.co.fintaxtech.ui.theme.FTTUiTheme
+import uk.co.fintaxtech.ui.theme.FTTTheme
 import uk.co.fintaxtech.ui.theme.PreviewColorPalette
 
 @Composable
@@ -85,7 +85,7 @@ fun FTTErrorView(
 @Preview(name = "Light Mode", showBackground = true)
 @Composable
 fun PreviewErrorViewLight() {
-    FTTUiTheme(palette = PreviewColorPalette(), darkTheme = false) {
+    FTTTheme(palette = PreviewColorPalette(), darkTheme = false) {
         Surface(color = MaterialTheme.colorScheme.background) {
             FTTErrorView(
                 title = "Something went wrong",
@@ -100,7 +100,7 @@ fun PreviewErrorViewLight() {
 @Preview(name = "Dark Mode", showBackground = true)
 @Composable
 fun PreviewErrorViewDark() {
-    FTTUiTheme(palette = PreviewColorPalette(), darkTheme = true) {
+    FTTTheme(palette = PreviewColorPalette(), darkTheme = true) {
         Surface(color = MaterialTheme.colorScheme.background) {
             FTTErrorView(
                 title = "Something went wrong",
