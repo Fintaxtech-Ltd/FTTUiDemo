@@ -3,10 +3,7 @@ package uk.co.fintaxtech.ui.views
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,33 +11,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.core.content.ContextCompat
-import uk.co.fintaxtech.ui.theme.FTTTheme
-import uk.co.fintaxtech.ui.theme.PreviewColorPalette
+import uk.co.fintaxtech.ui.R
+import uk.co.fintaxtech.ui.theme.FTTPreview
 
 /**
- * FTTPermissionsView is a screen that checks for a specific Android permission.
- * If granted, it renders nothing. If not granted, it shows an error-style view
- * with a button to request the permission.
+ * Checks for a single Android runtime permission.
  *
- * @param permission The Android permission string (e.g., "android.permission.CAMERA").
- * @param title Title text to show when permission is denied.
- * @param description Description text to show when permission is denied.
- * @param buttonText Text for the request button.
- * @param modifier Optional modifier.
+ * If the permission is granted this renders nothing. If not, it shows an [FTTErrorView]
+ * with an action that launches the system permission prompt; granting it recomposes the
+ * caller with the permission now held.
+ *
+ * @param permission     The Android permission string (e.g. `android.permission.CAMERA`).
+ * @param titleResId     Display copy shown while the permission is denied.
+ * @param requestLabelResId Display copy for the request action.
+ * @param detail         Optional supporting text. Genuine data, so a plain [String].
  */
 @Composable
 fun FTTPermissionsView(
     permission: String,
-    title: String,
-    description: String,
-    buttonText: String,
-    modifier: Modifier = Modifier
+    @StringRes titleResId: Int,
+    modifier: Modifier = Modifier,
+    @StringRes requestLabelResId: Int = R.string.ftt_retry,
+    detail: String? = null
 ) {
     val context = LocalContext.current
-    
-    // Internal state to track if permission was just granted to trigger recomposition
+
     var isGranted by remember(permission) {
         mutableStateOf(
             ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
@@ -55,43 +52,24 @@ fun FTTPermissionsView(
 
     if (!isGranted) {
         FTTErrorView(
-            title = title,
-            description = description,
-            buttonText = buttonText,
-            onButtonClick = { launcher.launch(permission) },
-            icon = Icons.Default.Lock,
-            modifier = modifier
+            titleResId = titleResId,
+            modifier = modifier,
+            detail = detail,
+            onRetry = { launcher.launch(permission) },
+            retryLabelResId = requestLabelResId
         )
     }
 }
 
-// --- Previews ---
-@Preview(name = "Light Mode", showBackground = true)
+@PreviewLightDark
 @Composable
-private fun PreviewPermissionsViewLight() {
-    FTTTheme(palette = PreviewColorPalette(), darkTheme = false) {
-        Surface(color = MaterialTheme.colorScheme.background) {
-            FTTPermissionsView(
-                permission = "android.permission.CAMERA",
-                title = "Camera Permission Required",
-                description = "This app needs camera access to scan barcodes. Please grant the permission.",
-                buttonText = "Grant Permission"
-            )
-        }
-    }
-}
-
-@Preview(name = "Dark Mode", showBackground = true)
-@Composable
-private fun PreviewPermissionsViewDark() {
-    FTTTheme(palette = PreviewColorPalette(), darkTheme = true) {
-        Surface(color = MaterialTheme.colorScheme.background) {
-            FTTPermissionsView(
-                permission = "android.permission.CAMERA",
-                title = "Camera Permission Required",
-                description = "This app needs camera access to scan barcodes. Please grant the permission.",
-                buttonText = "Grant Permission"
-            )
-        }
+private fun FTTPermissionsViewPreview() {
+    FTTPreview {
+        FTTPermissionsView(
+            permission = "android.permission.CAMERA",
+            titleResId = R.string.ftt_preview_error_title,
+            requestLabelResId = R.string.ftt_retry,
+            detail = "Camera access is needed to scan barcodes."
+        )
     }
 }

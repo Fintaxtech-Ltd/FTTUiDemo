@@ -15,11 +15,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import uk.co.fintaxtech.feature.demo.DemoActivity
 import uk.co.fintaxtech.ui.activities.FTTEmptyActivity
-import uk.co.fintaxtech.ui.components.FTTTopAppBar
+import uk.co.fintaxtech.ui.components.FTTTopBar
+import uk.co.fintaxtech.ui.theme.FTTColorPalette
+import javax.inject.Inject
 import kotlin.jvm.java
 
 @AndroidEntryPoint
 class MainActivity : FTTEmptyActivity() {
+
+    @Inject
+    lateinit var injectedColorPalette: FTTColorPalette
+
+    override val colorPalette: FTTColorPalette
+        get() = injectedColorPalette
 
     override val content: @Composable (() -> Unit)
         get() = { MainActivityContent() }
@@ -29,8 +37,8 @@ class MainActivity : FTTEmptyActivity() {
 fun MainActivityContent(){
     Scaffold(
             topBar = {
-                FTTTopAppBar(
-                    title = R.string.app_name
+                FTTTopBar(
+                    titleResId = R.string.app_name
                 )
             },
             modifier = Modifier.fillMaxSize()

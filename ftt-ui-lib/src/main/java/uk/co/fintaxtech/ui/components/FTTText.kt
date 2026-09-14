@@ -1,94 +1,221 @@
 package uk.co.fintaxtech.ui.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import uk.co.fintaxtech.ui.R
-import uk.co.fintaxtech.ui.theme.FTTTheme
+import uk.co.fintaxtech.ui.theme.FTTPreview
+import uk.co.fintaxtech.ui.theme.FTTTextStyles
+import uk.co.fintaxtech.ui.theme.LocalFTTColors
 
 /**
- * A title text component for the FTT UI library.
+ * The design's type roles. Feature code selects a role rather than a raw
+ * `TextStyle`, so the set of legal treatments stays closed and restyling is central.
  *
- * @param text The text to be displayed.
- * @param modifier Optional modifier for the component.
- * @param color Optional text color.
- * @param textAlign Optional text alignment.
- * @param maxLines Optional maximum number of lines.
- * @param overflow Optional text overflow behavior.
+ * One role per row of the table in rr-design/tokens.md.
  */
-@Composable
-fun FTTTextTitle(
-    @StringRes textId: Int,
-    modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified,
-    textAlign: TextAlign? = null,
-    maxLines: Int = Int.MAX_VALUE,
-    overflow: TextOverflow = TextOverflow.Clip
-) {
-    Text(
-        text = stringResource(textId),
-        modifier = modifier,
-        color = color,
-        style = MaterialTheme.typography.titleLarge,
-        textAlign = textAlign,
-        maxLines = maxLines,
-        overflow = overflow,
-        fontWeight = FontWeight.Bold
-    )
+enum class FTTTextStyle {
+    // Prose — Manrope
+    ScreenTitle,
+    SheetTitle,
+    SectionHeader,
+    Badge,
+    AvatarInitials,
+    Wordmark,
+    WordmarkSmall,
+    CardTitle,
+    SectionTitle,
+    ButtonLabel,
+    ListItemTitle,
+    ListItemValue,
+    Body,
+    BodyLarge,
+    Meta,
+    Link,
+    Caption,
+    TabLabelActive,
+    TabLabelInactive,
+    DayLabel,
+
+    // Monospace — every number the user reads or edits. Tabular figures keep
+    // columns still while a timer ticks or a value is typed.
+    MonoTimer,
+    MonoLarge,
+    MonoValue,
+    MonoSetNumber,
+    MonoMeta
 }
 
 /**
- * A body text component for the FTT UI library.
+ * Semantic text colours. Prevents features hardcoding a [Color] or reaching into the
+ * colour scheme directly, and keeps light/dark switching automatic.
+ */
+enum class FTTTextColor {
+    Primary,
+    Secondary,
+    Accent,
+    OnAccent,
+    Success,
+    Error
+}
+
+/**
+ * Text whose content is **display copy**.
  *
- * @param text The text to be displayed.
- * @param modifier Optional modifier for the component.
- * @param color Optional text color.
- * @param textAlign Optional text alignment.
- * @param maxLines Optional maximum number of lines.
- * @param overflow Optional text overflow behavior.
+ * Accepts a string resource only, so an unlocalized literal cannot reach the UI.
+ * For text that originates from the user or a server, use [FTTDataText].
+ *
+ * @param textResId  Display copy. Always a string resource.
+ * @param formatArgs Optional substitutions for a formatted resource.
  */
 @Composable
-fun FTTTextBody(
-    @StringRes textId: Int,
+fun FTTText(
+    @StringRes textResId: Int,
     modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified,
+    style: FTTTextStyle = FTTTextStyle.Body,
+    color: FTTTextColor = FTTTextColor.Primary,
     textAlign: TextAlign? = null,
     maxLines: Int = Int.MAX_VALUE,
-    overflow: TextOverflow = TextOverflow.Clip
+    overflow: TextOverflow = TextOverflow.Ellipsis,
+    vararg formatArgs: Any
 ) {
     Text(
-        text = stringResource(textId),
+        text = if (formatArgs.isEmpty()) {
+            stringResource(id = textResId)
+        } else {
+            stringResource(id = textResId, *formatArgs)
+        },
         modifier = modifier,
-        color = color,
-        style = MaterialTheme.typography.bodyLarge,
+        style = style.resolve(),
+        color = color.resolve(),
         textAlign = textAlign,
         maxLines = maxLines,
         overflow = overflow
     )
 }
 
-@Preview(showBackground = true)
+/**
+ * Text whose content is **data**, not copy — a name the user typed, a server message,
+ * a value already formatted for the current locale by the caller.
+ *
+ * This is the deliberate, named exception to the string-resource rule. It is separate
+ * from [FTTText] rather than an overload so that every dynamic string is greppable and
+ * a reviewer can see at a glance that it was an intentional choice.
+ *
+ * @param text Genuine data. Never a hardcoded display literal.
+ */
 @Composable
-private fun FTTTextPreview() {
-    FTTTheme {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            FTTTextTitle(textId = R.string.standard_title)
-            FTTTextBody(textId = R.string.standard_title)
-        }
+fun FTTDataText(
+    text: String,
+    modifier: Modifier = Modifier,
+    style: FTTTextStyle = FTTTextStyle.Body,
+    color: FTTTextColor = FTTTextColor.Primary,
+    textAlign: TextAlign? = null,
+    maxLines: Int = Int.MAX_VALUE,
+    overflow: TextOverflow = TextOverflow.Ellipsis
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        style = style.resolve(),
+        color = color.resolve(),
+        textAlign = textAlign,
+        maxLines = maxLines,
+        overflow = overflow
+    )
+}
+
+@Composable
+@ReadOnlyComposable
+internal fun FTTTextStyle.resolve() = when (this) {
+    FTTTextStyle.ScreenTitle -> FTTTextStyles.ScreenTitle
+    FTTTextStyle.SheetTitle -> FTTTextStyles.SheetTitle
+    FTTTextStyle.SectionHeader -> FTTTextStyles.SectionHeader
+    FTTTextStyle.Badge -> FTTTextStyles.Badge
+    FTTTextStyle.AvatarInitials -> FTTTextStyles.AvatarInitials
+    FTTTextStyle.Wordmark -> FTTTextStyles.Wordmark
+    FTTTextStyle.WordmarkSmall -> FTTTextStyles.WordmarkSmall
+    FTTTextStyle.CardTitle -> FTTTextStyles.CardTitle
+    FTTTextStyle.SectionTitle -> FTTTextStyles.SectionTitle
+    FTTTextStyle.ButtonLabel -> FTTTextStyles.ButtonLabel
+    FTTTextStyle.ListItemTitle -> FTTTextStyles.ListItemTitle
+    FTTTextStyle.ListItemValue -> FTTTextStyles.ListItemValue
+    FTTTextStyle.Body -> FTTTextStyles.Body
+    FTTTextStyle.BodyLarge -> FTTTextStyles.BodyLarge
+    FTTTextStyle.Meta -> FTTTextStyles.Meta
+    FTTTextStyle.Link -> FTTTextStyles.Link
+    FTTTextStyle.Caption -> FTTTextStyles.Caption
+    FTTTextStyle.TabLabelActive -> FTTTextStyles.TabLabelActive
+    FTTTextStyle.TabLabelInactive -> FTTTextStyles.TabLabelInactive
+    FTTTextStyle.DayLabel -> FTTTextStyles.DayLabel
+    FTTTextStyle.MonoTimer -> FTTTextStyles.MonoTimer
+    FTTTextStyle.MonoLarge -> FTTTextStyles.MonoLarge
+    FTTTextStyle.MonoValue -> FTTTextStyles.MonoValue
+    FTTTextStyle.MonoSetNumber -> FTTTextStyles.MonoSetNumber
+    FTTTextStyle.MonoMeta -> FTTTextStyles.MonoMeta
+}
+
+@Composable
+@ReadOnlyComposable
+private fun FTTTextColor.resolve(): Color = when (this) {
+    FTTTextColor.Primary -> MaterialTheme.colorScheme.onSurface
+    FTTTextColor.Secondary -> MaterialTheme.colorScheme.onSurfaceVariant
+    FTTTextColor.Accent -> MaterialTheme.colorScheme.primary
+    FTTTextColor.OnAccent -> MaterialTheme.colorScheme.onPrimary
+    FTTTextColor.Success -> LocalFTTColors.current.success
+    FTTTextColor.Error -> MaterialTheme.colorScheme.error
+}
+
+@PreviewLightDark
+@Composable
+private fun FTTTextWordmarkPreview() {
+    FTTPreview {
+        FTTText(
+            textResId = R.string.ftt_preview_wordmark,
+            style = FTTTextStyle.Wordmark,
+            color = FTTTextColor.Accent
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun FTTTextCardTitlePreview() {
+    FTTPreview {
+        FTTText(
+            textResId = R.string.ftt_preview_card_title,
+            style = FTTTextStyle.CardTitle
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun FTTTextBodySecondaryPreview() {
+    FTTPreview {
+        FTTText(
+            textResId = R.string.ftt_preview_body,
+            style = FTTTextStyle.Body,
+            color = FTTTextColor.Secondary
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun FTTDataTextPreview() {
+    FTTPreview {
+        FTTDataText(
+            text = "Push Day A",
+            style = FTTTextStyle.ListItemTitle
+        )
     }
 }

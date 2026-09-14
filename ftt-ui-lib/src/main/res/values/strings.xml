@@ -2,4 +2,78 @@
 <resources>
     <string name="standard_title">Standard Title</string>
     <string name="ftt_back_desc">Back</string>
+
+    <!-- ===================================================================== -->
+    <!-- Migrated from the RepRocket core:designsystem module.                  -->
+    <!-- ===================================================================== -->
+
+    <!-- Production strings shipped with the FTT component library. -->
+    <string name="ftt_retry">Try again</string>
+
+    <!-- Day initials, first day of the week first. Localizable. -->
+    <string-array name="ftt_day_labels">
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+        <item>S</item>
+    </string-array>
+
+    <!--
+      Preview-only strings. The ftt_preview_ prefix marks them as non-production so
+      they stay greppable and are obvious candidates for stripping from a release.
+    -->
+    <string name="ftt_preview_primary_action">Start New Workout</string>
+    <string name="ftt_preview_error_title">Something went wrong</string>
+    <string name="ftt_preview_loading">Loading your session…</string>
+    <string name="ftt_preview_empty_title">Nothing here yet</string>
+    <string name="ftt_preview_empty_body">Your logged sessions will show up here.</string>
+    <string name="ftt_preview_wordmark">RepRocket</string>
+    <string name="ftt_preview_card_title">4 Day Streak</string>
+    <string name="ftt_preview_body">3 workouts this week · 42,300 lb moved</string>
+    <string name="ftt_preview_see_all">See all</string>
+    <string name="ftt_preview_icon_description">Example icon</string>
+    <string name="ftt_preview_tab_home">Home</string>
+    <string name="ftt_preview_tab_history">History</string>
+    <string name="ftt_preview_tab_settings">Settings</string>
+    <string name="ftt_preview_section_header">Account</string>
+    <string name="ftt_preview_manage_subscription">Manage Subscription</string>
+    <string name="ftt_preview_weight_units">Weight Units</string>
+    <string name="ftt_preview_theme_mode">Theme Mode</string>
+    <string name="ftt_preview_rest_timer_sound">Rest Timer Sound</string>
+    <string name="ftt_preview_backup">Backup Local Database</string>
+    <string name="ftt_preview_restore">Restore Data</string>
+    <string name="ftt_preview_badge">PRO Member</string>
+
+    <!-- Shared dialog default. Overridable per call site. -->
+    <string name="ftt_dialog_cancel">Cancel</string>
+
+    <string name="ftt_preview_dialog_title">Discard this?</string>
+    <string name="ftt_preview_dialog_body">This cannot be undone.</string>
+    <string name="ftt_preview_dialog_confirm">Discard</string>
+    <string name="ftt_add">+ Add</string>
+    <string name="ftt_preview_field_label">Name</string>
+    <string name="ftt_preview_field_placeholder">e.g. Rope Pushdown</string>
+    <string name="ftt_preview_field_error">That name is already taken.</string>
+    <string name="ftt_preview_dropdown_option_1">Option One</string>
+    <string name="ftt_preview_dropdown_option_2">Option Two</string>
+    <string name="ftt_preview_dropdown_option_3">Option Three</string>
+    <!-- Set table column headers. Were hardcoded English inside the component. -->
+    <string name="ftt_set_table_set">Set</string>
+    <string name="ftt_set_table_previous">Previous</string>
+    <string name="ftt_set_table_reps">Reps</string>
+    <!-- Long-press the set number or previous-performance cell to remove that set. -->
+    <string name="ftt_set_row_delete">Delete Set</string>
+    <string name="ftt_set_row_long_press_hint">Long press to delete this set</string>
+    <string name="ftt_top_bar_back">Back</string>
+    <!-- The search field's clear button. Announced, not decorative: it is the only
+         way to empty the field without deleting character by character. -->
+    <string name="ftt_search_clear">Clear search</string>
+    <string name="ftt_preview_top_bar_title">Exercise Library</string>
+    <string name="ftt_preview_top_bar_action">Save</string>
+    <string name="ftt_fab_save">Save</string>
+    <string name="ftt_preview_dialog_field_label">Name</string>
+    <string name="ftt_preview_dialog_field_placeholder">Leave empty to use the default</string>
 </resources>

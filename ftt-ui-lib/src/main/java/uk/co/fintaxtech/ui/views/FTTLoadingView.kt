@@ -1,70 +1,74 @@
 package uk.co.fintaxtech.ui.views
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import uk.co.fintaxtech.ui.theme.FTTUiTheme
-import uk.co.fintaxtech.ui.theme.PreviewColorPalette
+import uk.co.fintaxtech.ui.R
+import uk.co.fintaxtech.ui.components.FTTText
+import uk.co.fintaxtech.ui.components.FTTTextColor
+import uk.co.fintaxtech.ui.components.FTTTextStyle
+import uk.co.fintaxtech.ui.theme.FTTPreview
 
+/**
+ * Whole-region busy state.
+ *
+ * @param messageResId Optional display copy. Always a string resource. Pass null for a
+ *                     bare indicator.
+ */
 @Composable
 fun FTTLoadingView(
     modifier: Modifier = Modifier,
-    message: String? = "Loading...",
+    @StringRes messageResId: Int? = null
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         CircularProgressIndicator(
-            color = MaterialTheme.colorScheme.primary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            modifier = Modifier.size(40.dp),
+            color = MaterialTheme.colorScheme.primary
         )
 
-        message?.let {
+        if (messageResId != null) {
             Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = it,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            FTTText(
+                textResId = messageResId,
+                style = FTTTextStyle.Body,
+                color = FTTTextColor.Secondary,
                 textAlign = TextAlign.Center
             )
         }
     }
 }
 
-// --- Previews ---
-@Preview(name = "Light Mode", showBackground = true)
+@PreviewLightDark
 @Composable
-private fun PreviewLoadingViewLight() {
-    FTTUiTheme(palette = PreviewColorPalette(), darkTheme = false) {
-        Surface(color = MaterialTheme.colorScheme.background) {
-            FTTLoadingView(message = "Fetching data...")
-        }
+private fun FTTLoadingViewDefaultPreview() {
+    FTTPreview {
+        FTTLoadingView()
     }
 }
 
-@Preview(name = "Dark Mode", showBackground = true)
+@PreviewLightDark
 @Composable
-private fun PreviewLoadingViewDark() {
-    FTTUiTheme(palette = PreviewColorPalette(), darkTheme = true) {
-        Surface(color = MaterialTheme.colorScheme.background) {
-            FTTLoadingView(message = "Fetching data...")
-        }
+private fun FTTLoadingViewWithMessagePreview() {
+    FTTPreview {
+        FTTLoadingView(messageResId = R.string.ftt_preview_loading)
     }
 }

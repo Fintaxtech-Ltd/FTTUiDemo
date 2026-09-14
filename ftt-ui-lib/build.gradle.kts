@@ -5,8 +5,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
     `maven-publish`
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
 }
 
 android {
@@ -18,7 +16,7 @@ android {
     }
 
     defaultConfig {
-        minSdk = 31
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -51,14 +49,15 @@ android {
 }
 
 dependencies {
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     debugImplementation(libs.androidx.compose.ui.tooling)
@@ -77,7 +76,7 @@ afterEvaluate {
 
                 groupId = "uk.co.fintaxtech"
                 artifactId = "ftt-android-ui-lib"
-                version = "0.0.2"
+                version = "0.0.3"
             }
         }
         repositories {

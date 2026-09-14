@@ -5,16 +5,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import dagger.hilt.android.AndroidEntryPoint
 import uk.co.fintaxtech.ui.theme.FTTColorPalette
 import uk.co.fintaxtech.ui.theme.FTTTheme
-import javax.inject.Inject
+import uk.co.fintaxtech.ui.theme.PreviewColorPalette
 
-@AndroidEntryPoint
 abstract class FTTEmptyActivity: ComponentActivity() {
 
-    @Inject
-    lateinit var colorPalette: FTTColorPalette
+    /**
+     * The color palette used to build [FTTTheme]. Subclasses may override this to supply their
+     * own palette, obtained however they like (Hilt on Android, Koin on KMP, or a plain instance).
+     * Defaults to [PreviewColorPalette] so the library stays free of any dependency-injection.
+     */
+    open val colorPalette: FTTColorPalette = PreviewColorPalette()
     abstract val content: @Composable () -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {

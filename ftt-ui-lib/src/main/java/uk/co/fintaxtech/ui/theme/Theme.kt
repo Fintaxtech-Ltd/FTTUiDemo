@@ -6,9 +6,16 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
+/**
+ * Palette-injectable theme: the caller supplies an [FTTColorPalette] (via Hilt on Android,
+ * Koin on KMP, or a plain instance) that is expanded into a full Material 3 colour scheme.
+ *
+ * For the design system's own token-driven appearance, use the [FTTTheme] overload in
+ * FTTTheme.kt that takes only `darkTheme`.
+ */
 @Composable
 fun FTTTheme(
-    palette: FTTColorPalette = PreviewColorPalette(),
+    palette: FTTColorPalette,
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
