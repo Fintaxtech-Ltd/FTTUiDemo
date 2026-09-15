@@ -1,6 +1,8 @@
 package uk.co.fintaxtech.ui.theme
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -82,11 +84,11 @@ fun FTTTheme(
  * A no-op in previews and tests, which have no window to configure.
  */
 @Composable
-private fun SystemBarIcons(darkTheme: Boolean) {
+internal fun SystemBarIcons(darkTheme: Boolean) {
     val view = LocalView.current
     if (view.isInEditMode) return
 
-    val window = (view.context as? Activity)?.window ?: return
+    val window = view.context.findActivity()?.window ?: return
     SideEffect {
         WindowCompat.getInsetsController(window, view).apply {
             // Light *icons* are what a dark background needs, hence the inversion.
@@ -94,4 +96,14 @@ private fun SystemBarIcons(darkTheme: Boolean) {
             isAppearanceLightNavigationBars = !darkTheme
         }
     }
+}
+
+/**
+ * A view's context is often a `ContextThemeWrapper` around the activity rather than the activity
+ * itself, so a plain `as? Activity` cast silently skipped the bar update.
+ */
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }

@@ -7,9 +7,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -31,6 +37,8 @@ import uk.co.fintaxtech.ui.theme.FTTPreview
  *                   never translated by this view. Pass null when absent.
  * @param onRetry    Optional action. The affordance renders only when supplied.
  * @param retryLabelResId Display copy for the retry affordance. Always a string resource.
+ * @param icon       Optional glyph above the title, tinted with the error colour. Decorative,
+ *                   so it carries no content description; the title states the failure.
  */
 @Composable
 fun FTTErrorView(
@@ -38,7 +46,8 @@ fun FTTErrorView(
     modifier: Modifier = Modifier,
     detail: String? = null,
     onRetry: (() -> Unit)? = null,
-    @StringRes retryLabelResId: Int = R.string.ftt_retry
+    @StringRes retryLabelResId: Int = R.string.ftt_retry,
+    icon: ImageVector? = null
 ) {
     Column(
         modifier = modifier
@@ -47,6 +56,16 @@ fun FTTErrorView(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.size(64.dp),
+                tint = MaterialTheme.colorScheme.error
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
         FTTText(
             textResId = titleResId,
             style = FTTTextStyle.CardTitle,
@@ -89,6 +108,19 @@ private fun FTTErrorViewRetryablePreview() {
             titleResId = R.string.ftt_preview_error_title,
             detail = "Connection timed out after 30s",
             onRetry = {}
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun FTTErrorViewWithIconPreview() {
+    FTTPreview {
+        FTTErrorView(
+            titleResId = R.string.ftt_preview_error_title,
+            detail = "Connection timed out after 30s",
+            onRetry = {},
+            icon = Icons.Default.Warning
         )
     }
 }

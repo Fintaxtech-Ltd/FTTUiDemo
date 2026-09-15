@@ -40,7 +40,8 @@ fun FTTTextButton(
         FTTText(
             textResId = textResId,
             style = style,
-            color = color
+            // A disabled action that keeps its accent colour still reads as tappable.
+            color = if (enabled) color else FTTTextColor.Secondary
         )
     }
 }

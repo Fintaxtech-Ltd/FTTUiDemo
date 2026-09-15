@@ -9,10 +9,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -47,16 +50,14 @@ fun FTTButton(
             contentColor = contentColor
         )
     ) {
-        FTTText(
-            textResId = textResId,
-            style = FTTTextStyle.ButtonLabel,
-            color = if (contentColor ==
-                MaterialTheme.colorScheme.onPrimary
-            ) {
-                FTTTextColor.OnAccent
-            } else {
-                FTTTextColor.Primary
-            },
+        // The label takes LocalContentColor, which Button sets to [contentColor]. Mapping the
+        // colour onto an FTTTextColor role instead discarded every custom contentColor except
+        // onPrimary, so a label on a container fill rendered as onSurface — unreadable on a
+        // dark container.
+        Text(
+            text = stringResource(id = textResId),
+            style = FTTTextStyle.ButtonLabel.resolve(),
+            color = LocalContentColor.current,
             modifier = Modifier.padding(vertical = 4.dp)
         )
     }
