@@ -5,13 +5,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 
 /**
- * Palette-injectable theme: the caller supplies an [FTTColorPalette] (via Hilt on Android,
- * Koin on KMP, or a plain instance) that is expanded into a full Material 3 colour scheme.
+ * Palette-injectable theme: the caller supplies an [FTTColorPalette] (via Koin, Hilt, or a
+ * plain instance) that is expanded into a full Material 3 colour scheme.
  *
- * For the design system's own token-driven appearance, use the [FTTTheme] overload in
- * FTTTheme.kt that takes only `darkTheme`.
+ * Typography, shapes, [LocalFTTColors], and the status-/navigation-bar icon adjustment are
+ * shared with the [FTTTheme] overload in FTTTheme.kt that takes only `darkTheme` — a caller
+ * supplying its own palette should not also lose every other part of the design system's
+ * appearance. `LocalFTTColors` in particular has no palette equivalent: [FTTColorPalette]
+ * only covers the Material [androidx.compose.material3.ColorScheme] surface, so the
+ * `accentContainer`/`hairline`/`success`/… tokens it carries still come from this library's
+ * own [FTTDarkExtendedColors]/[FTTLightExtendedColors] regardless of which palette is
+ * injected — without providing it here, every reader of `LocalFTTColors` would silently fall
+ * back to its `staticCompositionLocalOf` default (always the dark set) in light mode.
  */
 @Composable
 fun FTTTheme(
@@ -123,9 +131,16 @@ fun FTTTheme(
         )
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    val extendedColors = if (darkTheme) FTTDarkExtendedColors else FTTLightExtendedColors
+
+    SystemBarIcons(darkTheme = darkTheme)
+
+    CompositionLocalProvider(LocalFTTColors provides extendedColors) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = FTTTypography,
+            shapes = FTTShapes,
+            content = content
+        )
+    }
 }

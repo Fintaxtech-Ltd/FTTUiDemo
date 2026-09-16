@@ -38,18 +38,12 @@ val OnError = Color(0xFF690005)
 // Design-accurate tokens, extracted from the Claude Design project "Metoni App".
 // Source of truth: rr-design/tokens.md (in the Metoni/RepRocket repo)
 //
-// SYNCED 2026-09-16 from core:designsystem's current Color.kt. That file's own history
-// notes a since-reverted excursion to a teal accent — RepRocket.Metoni went orange ->
-// teal -> back to orange for the *accent* itself, which is why FTTAccent/FTTOnAccent
-// below are mode-specific pairs (a holdover from the teal migration, when a single
-// mode-invariant value stopped being possible) even though both modes currently resolve
-// to the same 0xFFFF5722. The accent-container/tint-subtle/brand-gradient tokens below
-// are copied faithfully from the current source file, which is STILL teal-derived
-// (0x00352F / 0xD7EFEB / 0x4DB6AC / 0x00897B / 0x00695C) — i.e. the accent reverted to
-// orange but these near-accent tokens did not. That looks like an incomplete revert on
-// the source side rather than an intentional two-tone design; flagged upstream rather
-// than silently "fixed" here, since this file exists to mirror core:designsystem, not to
-// correct it.
+// SYNCED 2026-09-16 from core:designsystem's current Color.kt, including that file's
+// 2026-09-16 revert of the accent-container/tint-subtle/brand-gradient tokens back to
+// orange-derived values — RepRocket/Metoni's teal excursion was accent-only in the end,
+// not a lasting change to these near-accent tokens too. FTTAccent/FTTOnAccent stay
+// mode-specific pairs regardless, since a contrast-correct onAccent still needs one value
+// per mode even where the accent itself is mode-invariant.
 // ---------------------------------------------------------------------------
 
 /** Dark-mode accent. 6.83:1 on FTTDarkCard, 7.67:1 on FTTDarkBackground. */
@@ -113,14 +107,14 @@ val FTTLightErrorTint = Color(0x1FB3261E)
 // ---------------------------------------------------------------------------
 
 /** Filled container behind accent-tinted content: suggestion banners, selected
- *  plan cards, the Android navigation-bar active pill. Still teal-derived in the
- *  source file — see the sync note above. */
-val FTTDarkAccentContainer = Color(0xFF00352F)
-val FTTLightAccentContainer = Color(0xFFD7EFEB)
+ *  plan cards, the Android navigation-bar active pill. Orange-derived brown,
+ *  matching the current orange accent. */
+val FTTDarkAccentContainer = Color(0xFF3E2723)
+val FTTLightAccentContainer = Color(0xFFFBE9E7)
 
-/** Subtle accent wash behind an icon. Still teal-derived — see the sync note above. */
-val FTTDarkAccentTintSubtle = Color(0x1F4DB6AC)
-val FTTLightAccentTintSubtle = Color(0x1700796B)
+/** Subtle accent wash behind an icon. */
+val FTTDarkAccentTintSubtle = Color(0x1FFF5722)
+val FTTLightAccentTintSubtle = Color(0x17FF5722)
 
 /** Recessed track: text-field backgrounds, segmented-control and chip tracks. */
 val FTTDarkFieldTrack = Color(0x12FFFFFF)
@@ -139,8 +133,7 @@ val FTTLightSuccessRowTint = Color(0x122E7D32)
 val FTTDarkScrim = Color(0x8C000000)
 val FTTLightScrim = Color(0x59212121)
 
-/** Brand gradient stops, 150 degrees, at 0% / 55% / 100%. Still teal-derived — see the
- *  sync note above. */
-val FTTBrandGradientStart = Color(0xFF4DB6AC)
-val FTTBrandGradientMid = Color(0xFF00897B)
-val FTTBrandGradientEnd = Color(0xFF00695C)
+/** Brand gradient stops, 150 degrees, at 0% / 55% / 100%. */
+val FTTBrandGradientStart = Color(0xFFFF8A50)
+val FTTBrandGradientMid = Color(0xFFFF5722)
+val FTTBrandGradientEnd = Color(0xFFE64100)
