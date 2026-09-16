@@ -14,8 +14,8 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = FTTAccent,
-    onPrimary = FTTOnAccent,
+    primary = FTTDarkAccent,
+    onPrimary = FTTDarkOnAccent,
     background = FTTDarkBackground,
     onBackground = FTTDarkOnSurface,
     surface = FTTDarkCard,
@@ -29,8 +29,8 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = FTTAccent,
-    onPrimary = FTTOnAccent,
+    primary = FTTLightAccent,
+    onPrimary = FTTLightOnAccent,
     background = FTTLightBackground,
     onBackground = FTTLightOnSurface,
     surface = FTTLightCard,
