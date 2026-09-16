@@ -76,7 +76,7 @@ afterEvaluate {
 
                 groupId = "uk.co.fintaxtech"
                 artifactId = "ftt-android-ui-lib"
-                version = "0.0.4"
+                version = "0.0.5"
             }
         }
         repositories {
